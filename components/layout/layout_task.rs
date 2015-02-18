@@ -74,6 +74,7 @@ use style::node::TNode;
 use style::media_queries::{MediaType, Device};
 use std::sync::{Arc, Mutex, MutexGuard};
 use url::Url;
+use time::{precise_time_ns, precise_time_s};
 
 /// Mutable data belonging to the LayoutTask.
 ///
@@ -633,6 +634,7 @@ impl LayoutTask {
                                          layout_root: &mut FlowRef,
                                          shared_layout_context: &mut SharedLayoutContext,
                                          rw_data: &mut RWGuard<'a>) {
+        println!("############ begin reflow. {}", precise_time_ns());
         let writing_mode = flow::base(&**layout_root).writing_mode;
         profile(TimeProfilerCategory::LayoutDispListBuild,
                 self.profiler_metadata(data),
@@ -719,6 +721,7 @@ impl LayoutTask {
 
             rw_data.stacking_context = Some(stacking_context.clone());
 
+            println!("############ done layout. {}", precise_time_ns());
             debug!("Layout done!");
 
             self.paint_chan.send(PaintMsg::PaintInit(stacking_context));

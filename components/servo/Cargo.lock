@@ -509,6 +509,7 @@ dependencies = [
  "string_cache 0.0.0 (git+https://github.com/servo/string-cache)",
  "string_cache_macros 0.0.0 (git+https://github.com/servo/string-cache)",
  "style 0.0.1",
+ "time 0.1.16 (registry+https://github.com/rust-lang/crates.io-index)",
  "url 0.2.19 (registry+https://github.com/rust-lang/crates.io-index)",
  "util 0.0.1",
 ]
