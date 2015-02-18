@@ -36,6 +36,7 @@ use std::mem;
 use std::thread::Builder;
 use std::sync::Arc;
 use std::sync::mpsc::{Receiver, Sender, channel};
+use time::{precise_time_ns, precise_time_s};
 
 /// Information about a hardware graphics layer that layout sends to the painting task.
 #[derive(Clone)]
@@ -192,12 +193,13 @@ impl<C> PaintTask<C> where C: PaintListener + Send {
 
     fn start(&mut self) {
         debug!("PaintTask: beginning painting loop");
-
+        println!("################ paint_task: start! {}", precise_time_ns());
         let mut exit_response_channel : Option<Sender<()>> = None;
         let mut waiting_for_compositor_buffers_to_exit = false;
         loop {
             match self.port.recv().unwrap() {
                 Msg::PaintInit(stacking_context) => {
+                    println!("################ paint_task: PaintInit {}", precise_time_ns());
                     self.root_stacking_context = Some(stacking_context.clone());
 
                     if !self.paint_permission {
@@ -211,6 +213,7 @@ impl<C> PaintTask<C> where C: PaintListener + Send {
                     self.initialize_layers();
                 }
                 Msg::Paint(requests) => {
+                    println!("################ paint_task: Paint");
                     if !self.paint_permission {
                         debug!("PaintTask: paint ready msg");
                         let ConstellationChan(ref mut c) = self.constellation_chan;
@@ -241,6 +244,7 @@ impl<C> PaintTask<C> where C: PaintListener + Send {
                     self.compositor.assign_painted_buffers(self.id, self.epoch, replies);
                 }
                 Msg::UnusedBuffer(unused_buffers) => {
+                    println!("################ paint_task: Unused");
                     debug!("PaintTask: Received {} unused buffers", unused_buffers.len());
                     self.used_buffer_count -= unused_buffers.len();
 
@@ -255,6 +259,7 @@ impl<C> PaintTask<C> where C: PaintListener + Send {
                     }
                 }
                 Msg::PaintPermissionGranted => {
+                    println!("################ paint_task: Permission");
                     self.paint_permission = true;
 
                     if self.root_stacking_context.is_some() {
@@ -263,9 +268,11 @@ impl<C> PaintTask<C> where C: PaintListener + Send {
                     }
                 }
                 Msg::PaintPermissionRevoked => {
+                    println!("################ paint_task: Revoked");
                     self.paint_permission = false;
                 }
                 Msg::Exit(response_channel, exit_type) => {
+                    println!("################ paint_task: Exit");
                     let should_wait_for_compositor_buffers = match exit_type {
                         PipelineExitType::Complete => false,
                         PipelineExitType::PipelineOnly => self.used_buffer_count != 0
