@@ -186,4 +186,6 @@ partial interface CSSStyleDeclaration {
   [TreatNullAs=EmptyString] attribute DOMString zIndex;
 
   [TreatNullAs=EmptyString] attribute DOMString imageRendering;
+
+  [TreatNullAs=EmptyString] attribute DOMString testMilkshakeFlavor;
 };

@@ -355,6 +355,7 @@ pub mod longhands {
     ${single_keyword("position", "static absolute relative fixed")}
     ${single_keyword("float", "none left right")}
     ${single_keyword("clear", "none left right both")}
+    ${single_keyword("-test-milkshake-flavor", "chocolate banana strawberry")}
 
     <%self:longhand name="-servo-display-for-hypothetical-box" derived_from="display">
         pub use super::display::{SpecifiedValue, get_initial_value};
@@ -4794,7 +4795,7 @@ macro_rules! css_properties_accessors {
             % for property in SHORTHANDS + LONGHANDS:
                 ## Servo internal CSS properties are not accessible.
                 ## FIXME: Add BinaryName WebIDL annotation (#4435).
-                % if property.derived_from is None and property.name != "float":
+                % if property.derived_from is None and property.name != "float" and property.name != "-test-milkshake-flavor":
                     % if property != LONGHANDS[-1]:
                         [${property.camel_case}, Set${property.camel_case}, "${property.name}"],
                     % else:

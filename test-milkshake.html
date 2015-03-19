@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Servo Custom CSS property: milkshake-flavor</title>
+    </head>
+    <body>
+        <div id="test" style="-test-milkshake-flavor: banana"></div>
+        <script>
+            var div = document.getElementById("test");
+            if (div.style.getPropertyValue("-test-milkshake-flavor") == "banana") {
+                div.style.setPropertyValue("-test-milkshake-flavor", "chocolate");
+                if (div.style.testMilkshakeFlavor == "chocolate") {
+                    window.alert("PASS: chocolate milkshake");
+                } else {
+                    window.alert("FAIL: setting property.");
+                }
+
+                div.style.setPropertyValue("-test-milkshake-flavor", "strawberry");
+                if (div.style.testMilkshakeFlavor == "strawberry") {
+                    window.alert("PASS: strawberry milkshake");
+                } else {
+                    window.alert("FAIL: setting property.");
+                }
+
+
+                div.style.setPropertyValue("-test-milkshake-flavor", "rubber");
+                if (div.style.testMilkshakeFlavor == "rubber") {
+                    window.alert("FAIL: horrible flavor.");
+                } else {
+                    window.alert("PASS: just keep it as strawberry.");
+                }
+
+            } else {
+                window.alert("FAIL: no property available.");
+            }
+        </script>
+    </body>
+</html>

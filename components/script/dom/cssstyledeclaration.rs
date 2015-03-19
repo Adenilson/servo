@@ -334,6 +334,14 @@ impl<'a> CSSStyleDeclarationMethods for JSRef<'a, CSSStyleDeclaration> {
         self.SetPropertyValue("float".to_owned(), value)
     }
 
+    fn TestMilkshakeFlavor(self) -> DOMString {
+        self.GetPropertyValue("-test-milkshake-flavor".to_owned())
+    }
+
+    fn SetTestMilkshakeFlavor(self, value: DOMString) {
+        self.SetPropertyValue("-test-milkshake-flavor".to_owned(), value).unwrap();
+    }
+
     fn IndexedGetter(self, index: u32, found: &mut bool) -> DOMString {
         let rval = self.Item(index);
         *found = index < self.Length();
